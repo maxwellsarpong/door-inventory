@@ -177,18 +177,22 @@ def render():
             
             with col1:
                 name = st.text_input("Door Name / Model Number *", placeholder="e.g., Oak Premium Door / 5555")
-                # dtype = st.text_input("Type *", placeholder="e.g., Glass, Metal, Wood")
+                dtype = st.text_input("Type *", placeholder="e.g., Glass, Metal, Wood")
                 
-                types = ["Metal", "Glass", "Wood"]
-                dtype = st.selectbox("Type", options=types, index=types.index(product.type) if product.type in types else 0)
+                # types = ["Metal", "Glass", "Wood"]
+                # try:
+                #     default_index = types.index(product.type) if product.type in types else 0
+                # except (ValueError, AttributeError):
+                #     default_index = 0
+                # dtype = st.selectbox("Type", options=types, index=default_index)
                 
-                # size = st.text_input("Size *", placeholder="e.g., O/H, Single, Double")
-                sizes = ["O/H", "Single", "Double"]
-                size = st.selectbox(
-                                    "Size",
-                                    options=sizes,
-                                    index=sizes.index(product.size) if product.size in sizes else 0
-                                )
+                size = st.text_input("Size *", placeholder="e.g., O/H, Single, Double")
+                # sizes = ["O/H", "Single", "Double"]
+                # size = st.selectbox(
+                #                     "Size",
+                #                     options=sizes,
+                #                     index=sizes.index(product.size) if product.size in sizes else 0
+                #                 )
             
             with col2:
                 buy = st.number_input("Buy Price (₵) *", min_value=0.0, step=0.01)

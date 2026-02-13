@@ -548,23 +548,23 @@ def render_page_content():
     
     elif st.session_state.current_page == "Inventory":
         # Import and render inventory page
-        import pages.inventory as inventory
+        import modules.inventory as inventory
         inventory.render()
     
     elif st.session_state.current_page == "Sales":
         # Import and render sales page
-        import pages.sales as sales
+        import modules.sales as sales
         sales.render()
     
     elif st.session_state.current_page == "Reports":
         # Import and render reports page
-        import pages.reports as reports
+        import modules.reports as reports
         reports.render()
     
     elif st.session_state.current_page == "Users":
         if st.session_state.user['role'] == 'admin':
             # Import and render user management page
-            import pages.users as users
+            import modules.users as users
             users.render()
         else:
             st.error("⛔ Access Denied: Admin privileges required")
