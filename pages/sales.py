@@ -22,10 +22,31 @@ def render():
         return f"₵{amount:,.2f}"
     
     def add_to_cart(product, quantity):
+        if quantity <= 0:
+            return False
+
+        # ❌ Prevent adding more than available stock
+        if quantity > product.quantity:
+                return False
+
+        # Check if item already exists in cart
         for item in st.session_state.cart:
             if item["product_id"] == product.id:
-                item["quantity"] += quantity
+                
+                # Calculate new total quantity
+                new_quantity = item["quantity"] + quantity
+
+                # ❌ Prevent exceeding available stock
+                if new_quantity > product.quantity:
+                    return False
+
+                # ❌ Avoid unnecessary update
+                if new_quantity == item["quantity"]:
+                    return False
+
+                item["quantity"] = new_quantity
                 return True
+            
         st.session_state.cart.append({
             "product_id": product.id,
             "name": product.name,

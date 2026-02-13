@@ -132,8 +132,16 @@ def render():
                             
                             with col1:
                                 edit_name = st.text_input("Door Name", value=product.name)
-                                edit_type = st.text_input("Type", value=product.type)
-                                edit_size = st.text_input("Size", value=product.size)
+                                # edit_type = st.text_input("Type", value=product.type)
+                                types = ["Metal", "Glass", "Wood"]
+                                selected_type = st.selectbox("Type", options=types, index=types.index(product.type) if product.type in types else 0)
+                                
+                                sizes = ["O/H", "Single", "Double"]
+                                selected_size = st.selectbox(
+                                                    "Size",
+                                                    options=sizes,
+                                                    index=sizes.index(product.size) if product.size in sizes else 0
+                                                )
                             
                             with col2:
                                 edit_buy = st.number_input("Buy Price (₵)", value=float(product.buy_price), min_value=0.0)
@@ -144,8 +152,8 @@ def render():
                             with col1:
                                 if st.form_submit_button("💾 Save Changes", use_container_width=True):
                                     product.name = edit_name.strip()
-                                    product.type = edit_type.strip()
-                                    product.size = edit_size.strip()
+                                    product.type = selected_type.strip()
+                                    product.size = selected_size.strip()
                                     product.buy_price = edit_buy
                                     product.sell_price = edit_sell
                                     product.quantity = edit_qty
@@ -168,9 +176,19 @@ def render():
             col1, col2 = st.columns(2)
             
             with col1:
-                name = st.text_input("Door Name *", placeholder="e.g., Oak Premium Door")
-                dtype = st.text_input("Type *", placeholder="e.g., Interior, Exterior")
-                size = st.text_input("Size *", placeholder="e.g., 80x36, 90x40")
+                name = st.text_input("Door Name / Model Number *", placeholder="e.g., Oak Premium Door / 5555")
+                # dtype = st.text_input("Type *", placeholder="e.g., Glass, Metal, Wood")
+                
+                types = ["Metal", "Glass", "Wood"]
+                dtype = st.selectbox("Type", options=types, index=types.index(product.type) if product.type in types else 0)
+                
+                # size = st.text_input("Size *", placeholder="e.g., O/H, Single, Double")
+                sizes = ["O/H", "Single", "Double"]
+                size = st.selectbox(
+                                    "Size",
+                                    options=sizes,
+                                    index=sizes.index(product.size) if product.size in sizes else 0
+                                )
             
             with col2:
                 buy = st.number_input("Buy Price (₵) *", min_value=0.0, step=0.01)

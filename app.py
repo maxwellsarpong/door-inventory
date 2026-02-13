@@ -6,7 +6,7 @@ st.set_page_config(
     page_title="Manuel Inventory System",
     page_icon="🚪",
     layout="wide",
-    initial_sidebar_state="expanded"
+    initial_sidebar_state="collapsed"
 )
 
 # Custom CSS for modern styling
@@ -570,10 +570,18 @@ def render_page_content():
             st.error("⛔ Access Denied: Admin privileges required")
 
 # Main application logic
-if st.session_state.user is None:
-    login()
 
+
+if st.session_state.user is None:
+    st.markdown("""
+        <style>
+            [data-testid="stSidebar"] {display: none;}
+            [data-testid="collapsedControl"] {display: none;}
+        </style>
+    """, unsafe_allow_html=True)
+
+    login()
 else:
-    
     render_sidebar()
     render_page_content()
+
