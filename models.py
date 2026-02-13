@@ -9,9 +9,9 @@ class User(Base):
     __tablename__ = "users"
     
     id = Column(Integer, primary_key=True)
-    username = Column(String, unique=True, nullable=False)
-    password_hash = Column(String, nullable=False)
-    role = Column(String, nullable=False)  # admin / staff
+    username = Column(String(150), unique=True, nullable=False)
+    password_hash = Column(String(255), nullable=False)
+    role = Column(String(255), nullable=False)  # admin / staff
     created_at = Column(DateTime, default=datetime.utcnow)
     
     # Relationships
@@ -25,9 +25,9 @@ class Product(Base):
     __tablename__ = "products"
     
     id = Column(Integer, primary_key=True)
-    name = Column(String, nullable=False)
-    type = Column(String, nullable=False)
-    size = Column(String, nullable=False)
+    name = Column(String(255), nullable=False)
+    type = Column(String(255), nullable=False)
+    size = Column(String(255), nullable=False)
     buy_price = Column(Float, nullable=False)
     sell_price = Column(Float, nullable=False)
     quantity = Column(Integer, nullable=False, default=0)
@@ -45,7 +45,7 @@ class Sale(Base):
     id = Column(Integer, primary_key=True)
     user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
     total = Column(Float, nullable=False)
-    payment_method = Column(String, nullable=False)
+    payment_method = Column(String(255), nullable=False)
     created_at = Column(DateTime, default=datetime.utcnow)
     
     # Relationships

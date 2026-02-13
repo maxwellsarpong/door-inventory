@@ -524,7 +524,7 @@ def render_home_page():
     db = SessionLocal()
     try:
         low_stock_items = db.query(Product).filter(Product.quantity < 10).all()
-        all_products = db.query(Product).filter(Product.quantity == 10).all()
+        product_count = db.query(Product).count()
         
         if low_stock_items:
             st.warning(f"⚠️ {len(low_stock_items)} product(s) are running low on stock. Check the Inventory page.")
@@ -534,7 +534,7 @@ def render_home_page():
                     st.write(f"• {item.name} ({item.type}, {item.size}) - Only {item.quantity} left")
                 if len(low_stock_items) > 5:
                     st.caption(f"... and {len(low_stock_items) - 5} more")
-        elif all_products == 0:
+        elif product_count == 0:
             st.error("🚨 No products in inventory! Please add products to get started.")
         else:
             st.success("✅ All inventory levels are healthy!")

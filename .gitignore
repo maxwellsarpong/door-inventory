@@ -6,3 +6,8 @@ ced copy.db
 CED.spec
 gen.py
 .DS_Store
+run_ced.py
+ced_copy.db
+sales2.txt
+.streamlit
+.vscode

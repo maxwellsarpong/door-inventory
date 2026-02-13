@@ -1,21 +1,43 @@
-from pathlib import Path
-import platform
+import streamlit as st
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
+from models import Base
 
-def get_app_data_dir():
-    system = platform.system()
-    if system == "Windows":
-        return Path.home() / "AppData" / "Roaming" / "CED"
-    elif system == "Darwin":
-        return Path.home() / "Library" / "Application Support" / "CED"
-    else:
-        return Path.home() / ".ced"
+# -------------------------
+# LOAD DATABASE CREDENTIALS
+# -------------------------
+DB_USER = st.secrets["database"]["user"]
+DB_PASS = st.secrets["database"]["password"]
+DB_HOST = st.secrets["database"]["host"]
+DB_PORT = st.secrets["database"]["port"]
+DB_NAME = st.secrets["database"]["name"]
 
-APP_DIR = get_app_data_dir()
-APP_DIR.mkdir(parents=True, exist_ok=True)
+DATABASE_URL = (
+    f"mysql+pymysql://{DB_USER}:{DB_PASS}"
+    f"@{DB_HOST}:{DB_PORT}/{DB_NAME}"
+)
 
-DB_PATH = APP_DIR / "ced.db"
+# -------------------------
+# CREATE ENGINE
+# -------------------------
+engine = create_engine(
+    DATABASE_URL,
+    echo=False,
+    pool_pre_ping=True,
+    pool_recycle=280,
+    connect_args={"ssl": {}},  # Required for cloud MySQL
+)
 
-engine = create_engine(f"sqlite:///{DB_PATH}", echo=False)
-SessionLocal = sessionmaker(bind=engine)
+# -------------------------
+# CREATE SESSION FACTORY
+# -------------------------
+SessionLocal = sessionmaker(
+    autocommit=False,
+    autoflush=False,
+    bind=engine
+)
+
+# -------------------------
+# CREATE TABLES (RUNS ON START)
+# -------------------------
+Base.metadata.create_all(bind=engine)
